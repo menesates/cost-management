@@ -30,7 +30,13 @@ public class User {
     public User() {
     }
 
-    public User(@NotEmpty String username, @NotEmpty String password, boolean enabled, @NotEmpty @Email String email, String firstName, String lastName, Date birthDate) {
+    public User(@NotEmpty String username,
+                @NotEmpty String password,
+                boolean enabled,
+                @NotEmpty @Email String email,
+                String firstName,
+                String lastName,
+                Date birthDate) {
         this.username = username;
         this.password = password;
         this.enabled = enabled;
