@@ -7,18 +7,23 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Users")
-@NamedQuery(query = "select u from User u", name = "find_all_users")
+@NamedQueries({
+        @NamedQuery(name = "User.findAll", query = "SELECT u FROM User u"),
+        @NamedQuery(name = "User.findByEnabled", query = "SELECT u FROM User u WHERE u.enabled = :enabled"),
+        @NamedQuery(name = "User.findByEmail", query = "SELECT u FROM User u WHERE u.email = :email")
+})
 public class User {
 
     @Id
     @NotEmpty
     private String username;
     @NotEmpty
+    @Column(nullable = false)
     private String password;
     private boolean enabled;
     @NotEmpty
     @Email
-    @Column(unique = true)
+    @Column(unique = true, nullable = false)
     private String email;
     private String firstName;
     private String lastName;
