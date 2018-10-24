@@ -6,13 +6,18 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "Budget")
+@NamedQueries({
+        @NamedQuery(name = "Budget.findAll", query = "SELECT b FROM Budget b"),
+        @NamedQuery(name = "Budget.findAllForUser", query = "SELECT b FROM Budget b WHERE b.user = :username"),
+        @NamedQuery(name = "Budget.deleteByUsername", query = "DELETE FROM Budget WHERE username = :username")
+})
 public class Budget {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @ManyToOne
-    @JoinColumn(name = "username")
+    @OneToOne
+    @JoinColumn(name = "username", nullable = false)
     private User user;
     @Enumerated(EnumType.STRING)
     @Column(length = 32)
