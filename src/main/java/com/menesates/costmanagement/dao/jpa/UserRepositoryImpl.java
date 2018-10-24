@@ -28,7 +28,7 @@ public class UserRepositoryImpl implements UserRepository {
         if (user == null){
             throw new UserNotFoundException("User not found! username: " + username);
         }
-        return entityManager.find(User.class, username);
+        return user;
     }
 
     @Override
