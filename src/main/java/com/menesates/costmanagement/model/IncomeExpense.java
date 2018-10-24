@@ -8,23 +8,30 @@ import java.util.Date;
 
 @Entity
 @Table(name = "Income_Expense")
+@NamedQueries({
+        @NamedQuery(name = "IncomeExpense.findAll", query = "SELECT ie FROM IncomeExpense ie"),
+        @NamedQuery(name = "IncomeExpense.findIncome", query = "SELECT ie FROM IncomeExpense ie WHERE ie.amount > 0"),
+        @NamedQuery(name = "IncomeExpense.findIncomeForUser", query = "SELECT ie FROM IncomeExpense ie WHERE ie.amount > 0 AND ie.user = :username"),
+        @NamedQuery(name = "IncomeExpense.findExpence", query = "SELECT ie FROM IncomeExpense ie WHERE ie.amount < 0"),
+        @NamedQuery(name = "IncomeExpense.findExpenceForUser", query = "SELECT ie FROM IncomeExpense ie WHERE ie.amount < 0 AND ie.user = :username"),
+        @NamedQuery(name = "IncomeExpense.findAllForUser", query = "SELECT ie FROM IncomeExpense ie WHERE ie.user = :username"),
+})
 public class IncomeExpense {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
     @ManyToOne
-    @JoinColumn(name = "username")
+    @JoinColumn(name = "username", nullable = false)
     private User user;
-    @NotEmpty
+    //@NotEmpty
     @Column(columnDefinition="Decimal(10,2) default '0.00'")
     private Double amount;
     private Integer currencyCode; // tr - 949
     private String explanation;
     @Enumerated(EnumType.STRING)
-    @Column(length = 32)
+    @Column(length = 32, nullable = false)
     private CostType costType;
-    @NotEmpty
     @Column(nullable = false)
     private Date date;
 
