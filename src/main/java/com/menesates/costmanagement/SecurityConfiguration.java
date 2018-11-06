@@ -29,10 +29,11 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     protected void configure(HttpSecurity http) throws Exception {
         http.authorizeRequests().antMatchers("/**/favicon.ico",
                 "/css/**",
-                "js/**",
+                "/js/**",
                 "/images/**",
                 "/webjars/**",
-                "/login.html").permitAll()
+                "/login.html",
+                "/register.html").permitAll()
                 .antMatchers("/rest/**").access("hasRole('EDITOR')")
                 .antMatchers("/actuator/**").access("hasRole('ADMIN')")
                 .anyRequest().authenticated();
@@ -40,7 +41,7 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.formLogin().loginPage("/login.html")
                 .loginProcessingUrl("/login")
                 .failureUrl("/login.html?loginFailed=true");
-        
+
         http.rememberMe()
                 .rememberMeCookieName("CostManagement-remember-me")
                 .tokenValiditySeconds(24*60*60) // 1 day
@@ -52,8 +53,6 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
     public PersistentTokenRepository persistentTokenRepository(){
         JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
         tokenRepository.setDataSource(dataSource);
-        System.out.println("geldi");
-        System.out.println(tokenRepository);
         return tokenRepository;
     }
 
