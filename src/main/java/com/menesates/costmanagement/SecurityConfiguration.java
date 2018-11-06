@@ -1,11 +1,14 @@
 package com.menesates.costmanagement;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.web.authentication.rememberme.JdbcTokenRepositoryImpl;
+import org.springframework.security.web.authentication.rememberme.PersistentTokenRepository;
 
 import javax.sql.DataSource;
 
@@ -37,10 +40,21 @@ public class SecurityConfiguration extends WebSecurityConfigurerAdapter {
         http.formLogin().loginPage("/login.html")
                 .loginProcessingUrl("/login")
                 .failureUrl("/login.html?loginFailed=true");
+        
+        http.rememberMe()
+                .rememberMeCookieName("CostManagement-remember-me")
+                .tokenValiditySeconds(24*60*60) // 1 day
+                .tokenRepository(persistentTokenRepository());
 
-        // todo remember me yapılacak
-        //http.rememberMe().userDetailsService(userDetailsService);
+    }
 
+    @Bean
+    public PersistentTokenRepository persistentTokenRepository(){
+        JdbcTokenRepositoryImpl tokenRepository = new JdbcTokenRepositoryImpl();
+        tokenRepository.setDataSource(dataSource);
+        System.out.println("geldi");
+        System.out.println(tokenRepository);
+        return tokenRepository;
     }
 
     @Override
