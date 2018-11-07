@@ -12,13 +12,18 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
 
 @Controller
 public class CostManagementController {
 
-    @Autowired
     private UserService userService;
+
+    @Autowired
+    public void setUserService(UserService userService) {
+        this.userService = userService;
+    }
 
     @RequestMapping("/")
     public ModelAndView homePage(){
@@ -28,9 +33,15 @@ public class CostManagementController {
     }
 
     @RequestMapping(value="/login.html")
-    public ModelAndView loginPage() {
+    public ModelAndView loginPage(HttpServletRequest request) {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("login");
+        String remoteUser = request.getRemoteUser();
+        if (remoteUser == null){
+            mav.setViewName("login");
+        }
+        else {
+            mav.setViewName("redirect:/");
+        }
         return mav;
     }
 
