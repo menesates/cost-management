@@ -1,10 +1,13 @@
 package com.menesates.costmanagement.sevice;
 
 import com.menesates.costmanagement.dao.AuthorityRepository;
+import com.menesates.costmanagement.dao.BudgetRepository;
 import com.menesates.costmanagement.dao.UserRepository;
 import com.menesates.costmanagement.exception.AuthoriyDoesNotMatchUserException;
 import com.menesates.costmanagement.model.Authority;
+import com.menesates.costmanagement.model.Budget;
 import com.menesates.costmanagement.model.User;
+import com.menesates.costmanagement.model.enums.Status;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Propagation;
@@ -19,6 +22,13 @@ public class UserServiceImpl implements UserService {
     private UserRepository userRepository;
 
     private AuthorityRepository authorityRepository;
+
+    private BudgetRepository budgetRepository;
+
+    @Autowired
+    public void setBudgetRepository(BudgetRepository budgetRepository) {
+        this.budgetRepository = budgetRepository;
+    }
 
     @Autowired
     public void setUserRepository(UserRepository userRepository) {
@@ -53,6 +63,14 @@ public class UserServiceImpl implements UserService {
         authority.setAuthority("ROLE_USER");
         authority.setUser(user);
         authorityRepository.create(authority);
+        Budget budget = new Budget();
+        budget.setUser(user);
+        budget.setStatus(Status.Normal);
+        budget.setBalance(0D);
+        budget.setLowerLimit(0D);
+        budget.setUpperLimit(0D);
+        budget.setCurrencyCode(949);
+        budgetRepository.create(budget);
     }
 
     @Override

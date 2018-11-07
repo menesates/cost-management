@@ -14,6 +14,9 @@
         <form th:action="@{/login}" method="post">
             <div class="row">
                 <h2 style="text-align:center">Login with Social Media or Manually</h2>
+                <div th:if="${param.succes}">
+                    <h5 class="succes">"You have successfully registered. Please Login"</h5>
+                </div>
                 <div class="vl">
                     <span class="vl-innertext">or</span>
                 </div>
@@ -42,6 +45,9 @@
                         <input type="checkbox" name="remember-me">
                         <span class="checkmark"></span>
                     </label>
+                    <div th:if="${param.loginFailed}">
+                        <p class="error">"Login Failed, Incorrect Username or Password"</p>
+                    </div>
                 </div>
 
             </div>

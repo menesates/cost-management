@@ -31,7 +31,6 @@ public class CostManagementController {
     public ModelAndView loginPage() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("login");
-        mav.addObject("user", new User());
         return mav;
     }
 
@@ -46,7 +45,7 @@ public class CostManagementController {
     public ModelAndView registerSave(@ModelAttribute("user")@Valid User user, BindingResult bindingResult){
         ModelAndView mav = new ModelAndView();
         if (!bindingResult.hasErrors()){
-            mav.setViewName("registerSucces");
+            mav.setViewName("redirect:login.html?succes=true");
             BCryptPasswordEncoder bCryptPasswordEncoder = new BCryptPasswordEncoder();
             user.setEnabled(true);
             user.setPassword("{bcrypt}" + bCryptPasswordEncoder.encode(user.getPassword()));
