@@ -1,7 +1,12 @@
 package com.menesates.costmanagement.web;
 
+import com.menesates.costmanagement.dao.BudgetRepository;
+import com.menesates.costmanagement.dao.IncomeExpenseRepository;
 import com.menesates.costmanagement.model.Authority;
+import com.menesates.costmanagement.model.Budget;
+import com.menesates.costmanagement.model.IncomeExpense;
 import com.menesates.costmanagement.model.User;
+import com.menesates.costmanagement.sevice.CostManagementService;
 import com.menesates.costmanagement.sevice.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -14,21 +19,40 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.validation.Valid;
+import java.security.Principal;
+import java.util.List;
 
 @Controller
 public class CostManagementController {
 
+    private CostManagementService costManagementService;
+
     private UserService userService;
+
+    @Autowired
+    public void setCostManagementService(CostManagementService costManagementService) {
+        this.costManagementService = costManagementService;
+    }
 
     @Autowired
     public void setUserService(UserService userService) {
         this.userService = userService;
     }
 
-    @RequestMapping("/")
-    public ModelAndView homePage(){
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView homePage(Principal principal){
         ModelAndView modelAndView = new ModelAndView();
         modelAndView.setViewName("index");
+        User user = userService.findUser(principal.getName());
+        Budget budget = costManagementService.findBudget(user);
+        List<IncomeExpense> incomes = costManagementService.findIncome(user);
+        List<IncomeExpense> expenses = costManagementService.findExpense(user);
+
+        modelAndView.addObject("user",user);
+        modelAndView.addObject("budget",budget);
+        modelAndView.addObject("incomes",incomes);
+        modelAndView.addObject("expenses", expenses);
+        modelAndView.addObject("newCost",new IncomeExpense());
         return modelAndView;
     }
 
@@ -65,7 +89,6 @@ public class CostManagementController {
         else {
             mav.setViewName("register");
         }
-        System.out.println(user);
         return mav;
     }
 

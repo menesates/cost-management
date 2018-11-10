@@ -5,12 +5,14 @@ import com.menesates.costmanagement.exception.IncomeExpenseNotFoundException;
 import com.menesates.costmanagement.model.IncomeExpense;
 import com.menesates.costmanagement.model.User;
 import org.springframework.stereotype.Repository;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import java.util.List;
 
 @Repository
+@Transactional
 public class IncomeExpenseRepositoryImpl implements IncomeExpenseRepository {
 
     @PersistenceContext

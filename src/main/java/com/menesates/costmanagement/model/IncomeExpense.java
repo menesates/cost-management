@@ -76,7 +76,7 @@ public class IncomeExpense {
         this.amount = amount;
     }
 
-    public int getCurrencyCode() {
+    public Integer getCurrencyCode() {
         return currencyCode;
     }
 

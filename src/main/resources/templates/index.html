@@ -4,14 +4,119 @@
     <meta charset="UTF-8" />
     <title>Index</title>
     <link th:href="@{/css/main.css}" type="text/css" rel="stylesheet"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.3/umd/popper.min.js"></script>
+    <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.1.3/js/bootstrap.min.js"></script>
 </head>
 <body>
-<table>
-    <h1>Index page</h1>
-    <form th:action="@{/logout}" method="post">
-        <input type="submit" value="logout"/>
-        <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+
+<h1 id="welcome">Welcome [[${user.username}]]</h1>
+<form th:action="@{/logout}" method="post">
+    <button style="background-color: #888888">Logout</button>
+    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+</form>
+
+<div th:class="${budget.status} + ' budget'" style="margin-top: 20px;">
+    <h3>Budget Information</h3>
+    <table id="budget-table">
+        <thead>
+        <tr>
+            <th>Balance</th>
+            <th>Status</th>
+            <th>Upper Limit</th>
+            <th>Lower Limit</th>
+        </tr>
+        </thead>
+        <tr>
+            <td th:text="${budget.balance} + ' TL'"></td>
+            <td th:text="${budget.status}"></td>
+            <td th:text="${budget.upperLimit} + ' TL'"></td>
+            <td th:text="${budget.lowerLimit} + ' TL'"></td>
+        </tr>
+    </table>
+</div>
+
+<div style="margin-top: 50px;">
+    <table id="incomes">
+        <tr>
+            <th>Amount</th>
+            <th>CostType</th>
+            <th>Currency Code</th>
+            <th>Date</th>
+            <th>Explanation</th>
+        </tr>
+        <tr th:each="income : ${incomes}">
+            <td th:text="${income.amount}"></td>
+            <td th:text="${income.costType}"></td>
+            <td th:text="${income.currencyCode}"></td>
+            <td th:text="${income.date}"></td>
+            <td th:text="${income.explanation}"></td>
+        </tr>
+    </table>
+    <div style="width: 800px; margin: auto;">
+        <button onclick="document.getElementById('id01').style.display='block'" style="">New Income Or Expense </button>
+    </div>
+    <table id="expenses">
+        <tr>
+            <th>Amount</th>
+            <th>CostType</th>
+            <th>Currency Code</th>
+            <th>Date</th>
+            <th>Explanation</th>
+        </tr>
+        <tr th:each="expense : ${expenses}">
+            <td th:text="${expense.amount}"></td>
+            <td th:text="${expense.costType}"></td>
+            <td th:text="${expense.currencyCode}"></td>
+            <td th:text="${expense.date}"></td>
+            <td th:text="${expense.explanation}"></td>
+        </tr>
+    </table>
+</div>
+
+
+
+<div id="id01" class="modal">
+
+    <form class="modal-content animate" th:action="@{/newCost}" method="post" th:object="${newCost}" style="width: 800px;">
+        <div class="imgcontainer">
+            <span onclick="document.getElementById('id01').style.display='none'" class="close" title="Close Modal">&times;</span>
+        </div>
+
+        <div class="container">
+            <label><b>Amount</b></label>
+            <input type="number" th:field="*{amount}" required> <br>
+
+            <label><b>Cost Type</b></label>
+            <select th:field="*{costType}">
+                <option th:each="type : ${T(com.menesates.costmanagement.model.enums.CostType).values()}"
+                        th:value="${type}"
+                        th:text="${type}">
+                </option>
+            </select> <br>
+
+            <label>Explanation</label>
+            <textarea th:field="*{explanation}"/> <br>
+
+            <button type="submit">Save</button>
+        </div>
+
     </form>
-</table>
+</div>
+
+<script>
+    // Get the modal
+    var modal = document.getElementById('id01');
+
+    // When the user clicks anywhere outside of the modal, close it
+    window.onclick = function(event) {
+        if (event.target == modal) {
+            modal.style.display = "none";
+        }
+    }
+</script>
+
 </body>
 </html>

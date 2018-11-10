@@ -27,8 +27,8 @@ INSERT INTO INCOME_EXPENSE(id,amount,cost_type,currency_code,date,explanation,us
 INSERT INTO INCOME_EXPENSE(id,amount,cost_type,currency_code,date,explanation,username) VALUES(8,-10000.5,'Car',949,'2018-10-20','','user4');
 INSERT INTO INCOME_EXPENSE(id,amount,cost_type,currency_code,date,explanation,username) VALUES(9,20000,'Other',949,'2018-10-20','','user4');
 
-INSERT INTO BUDGET(id,username) VALUES(1,'user1');
-INSERT INTO BUDGET(id,username) VALUES(2,'user2');
-INSERT INTO BUDGET(id,username) VALUES(3,'user3');
-INSERT INTO BUDGET(id,username) VALUES(4,'user4');
-INSERT INTO BUDGET(id,username) VALUES(5,'user5');
+INSERT INTO BUDGET(id,username,currency_code,status) VALUES(1,'user1',947,'Normal');
+INSERT INTO BUDGET(id,username,currency_code,status) VALUES(2,'user2',947,'Normal');
+INSERT INTO BUDGET(id,username,currency_code,status) VALUES(3,'user3',947,'Normal');
+INSERT INTO BUDGET(id,username,currency_code,status) VALUES(4,'user4',947,'Normal');
+INSERT INTO BUDGET(id,username,currency_code,status) VALUES(5,'user5',947,'Normal');
